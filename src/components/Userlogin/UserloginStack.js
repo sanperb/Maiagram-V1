@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator, NavigationContainer} from '@react-navigation/stack'
 import {StyleSheet, View, Text, Image} from 'react-native';
-import Colours from '/Users/sandra/Maiagram/src/components/res/Colours.js'
+import Colours from 'components/res/Colours.js'
 import UserloginScreen from './UserloginScreen';
 
 
@@ -9,7 +9,7 @@ function LogoTitle() {
   return (
     <Image
       style={{ width: 160, height: 50, marginTop: 5, alignSelf: 'center'}}
-      source={require('/Users/sandra/Maiagram/src/components/assets/logov4.png')}
+      source={require('components/assets/logov4.png')}
     />
   );
 }
