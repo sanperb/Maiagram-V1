@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -11,37 +11,40 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
 import storage from '@react-native-firebase/storage';
-import * as Progress from 'react-native-progress';
+import ProgressBar from 'react-native-progress/Bar';
 
 export default function UploadScreen() {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
 
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const {
+          status
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
 
-const selectImage = () => {
-  const options = {
-    maxWidth: 2000,
-    maxHeight: 2000,
-    storageOptions: {
-      skipBackup: true,
-      path: 'images'
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result);
     }
   };
-  ImagePicker.showImagePicker(options, response => {
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.error) {
-      console.log('ImagePicker Error: ', response.error);
-    } else if (response.customButton) {
-      console.log('User tapped custom button: ', response.customButton);
-    } else {
-      const source = { uri: response.uri };
-      console.log(source);
-      setImage(source);
-    }
-  });
-};
 
 const uploadImage = async () => {
   const { uri } = image;
@@ -78,28 +81,32 @@ const uploadImage = async () => {
   setImage(null);
 };
 
-return (
-  <SafeAreaView style={styles.container}>
-    <TouchableOpacity style={styles.selectButton} onPress={selectImage}>
-      <Text style={styles.buttonText}>Pick an image</Text>
-    </TouchableOpacity>
-    <View style={styles.imageContainer}>
-      {image !== null ? (
-        <Image source={{ uri: image.uri }} style={styles.imageBox} />
-      ) : null}
-      {uploading ? (
-        <View style={styles.progressBarContainer}>
-          <Progress.Bar progress={transferred} width={300} />
-        </View>
-      ) : (
-        <TouchableOpacity style={styles.uploadButton} onPress={uploadImage}>
-          <Text style={styles.buttonText}>Upload image</Text>
-        </TouchableOpacity>
-      )}
-    </View>
-  </SafeAreaView>
-);
-
+  return (
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.selectButton} onPress={pickImage}>
+        <Text style={styles.buttonText}>Pick an image</Text>
+      </TouchableOpacity>
+      <View style={styles.imageContainer}>
+        {image && (
+          <>
+            <Image source={{ uri: image.uri }} style={styles.imageBox} />
+            {uploading ? (
+              <View style={styles.progressBarContainer}>
+                <ProgressBar progress={transferred} width={300} />
+              </View>
+            ) : (
+              <TouchableOpacity
+                style={styles.uploadButton}
+                onPress={uploadImage}
+              >
+                <Text style={styles.buttonText}>Upload image</Text>
+              </TouchableOpacity>
+            )}
+          </>
+        )}
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({

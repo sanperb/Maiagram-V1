@@ -1,12 +1,12 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import PrincipalStack from './src/components/Screen/PrincipalStack'
+import PrincipalStack from 'components/Screen/PrincipalStack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image} from 'react-native';
-import Colours from '/Users/sandra/Maiagram/src/components/res/Colours.js'
-import UserloginStack from './src/components/Userlogin/UserloginStack'
-import UploadphotoStack from '/Users/sandra/Maiagram/src/components/Uploadphoto/UploadphotoStack'
-import * as firebase from 'firebase';
+import Colours from 'components/res/Colours.js'
+import UserloginStack from 'components/Userlogin/UserloginStack'
+import UploadphotoStack from 'components/Uploadphoto/UploadphotoStack'
+import firebase from 'firebase';
 
 
 const firebaseConfig = {
@@ -45,8 +45,8 @@ const App = () => {
          options={{
            tabBarIcon:({size, color})=>(
              <Image
-             style={{tintColor: Colours.lightest, width: size, height: size}} 
-             source={require ('/Users/sandra/Maiagram/src/components/assets/plus-icon.png')}/>
+             style={{tintColor: Colours.lightest, width: size, height: size}}
+             source={require ('components/assets/plus-icon.png')}/>
 
            )
          }}
@@ -57,8 +57,8 @@ const App = () => {
          options={{
            tabBarIcon:({size, color})=>(
              <Image
-             style={{tintColor: Colours.lightest, width: size, height: size}} 
-             source={require ('/Users/sandra/Maiagram/src/components/assets/plus-icon.png')}/>
+             style={{tintColor: Colours.lightest, width: size, height: size}}
+             source={require ('components/assets/plus-icon.png')}/>
 
            )
          }}
@@ -69,8 +69,8 @@ const App = () => {
          options={{
            tabBarIcon:({size, color})=>(
              <Image
-             style={{tintColor: Colours.lightest, width: size, height: size}} 
-             source={require ('/Users/sandra/Maiagram/src/components/assets/plus-icon.png')}/>
+             style={{tintColor: Colours.lightest, width: size, height: size}}
+             source={require ('components/assets/plus-icon.png')}/>
 
            )
          }}
